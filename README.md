@@ -9,14 +9,13 @@ VM against a **TDX** VM, ideally on the same physical host.
 TDX's memory-encryption engine sits inline on the path to DRAM. Its
 cost mostly shows up as **added nanoseconds per random access**, and
 that overhead only becomes visible once your working set is larger
-than the last-level cache (LLC) — below that, you're hitting cache,
+than the last-level cache (LLC), below that, you're hitting cache,
 not the encryption engine. Bandwidth (STREAM-style) is included as a
 secondary, cheaper-to-collect signal, but latency is the primary one.
 
 The core tool is a pointer-chasing benchmark (`src/latency_chase.c`)
-using Sattolo's algorithm to build a single random cycle over the
-array, so the CPU's prefetcher can't hide the true access latency —
-each next address is only known after the previous load completes.
+using Sattolo's algorithm to build a single random cycle over the array,
+so the CPU's prefetcher can't hide the true access latency each next address is only known after the previous load completes.
 
 ## Layout
 
@@ -63,10 +62,10 @@ table.
 
 - Check `system_info.txt` in each run dir for LLC size (`lscpu`) so you
   know which rows in the latency table are cache-resident vs DRAM.
-- Below the LLC size, expect noisy or even negative "overhead" —
+- Below the LLC size, expect noisy or even negative "overhead",
   you're not touching DRAM yet, so TDX shouldn't matter there.
 - Above the LLC size, expect the overhead % to stabilize at roughly a
-  constant value — that stabilized number is your answer to "how much
+  constant value, that stabilized number is your answer to "how much
   latency does TDX add."
 - Run with `--repeat 5` (or more) and treat single-rep results with
   suspicion; VMs are noisy neighbors.
@@ -76,10 +75,10 @@ table.
 - Best done on the **same physical host**, one VM with TDX enabled,
   one without, same vCPU count/pinning, same amount of RAM.
 - Set the CPU governor to `performance` on both (setup.sh does this).
-- Avoid comparing across different host generations/BIOS settings —
+- Avoid comparing across different host generations/BIOS settings,
   you'll measure hardware differences, not TDX overhead.
 - If you have access to Intel's Memory Latency Checker (`mlc`,
   license-gated download from Intel), `run_mlc.sh` will use it
-  automatically if it's on `PATH` — it's the closest thing to an
+  automatically if it's on `PATH`, it's the closest thing to an
   industry-standard tool for exactly this comparison and Intel's own
   TDX collateral is built with it.

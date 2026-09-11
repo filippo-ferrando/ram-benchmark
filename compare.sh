@@ -52,7 +52,9 @@ tdx_lat = load_latency(tdx_dir)
 def human_size(n):
     if n < 1024 * 1024:
         return f"{n // 1024}KB"
-    return f"{n // 1024 // 1024}MB"
+    if n < 1024 * 1024 * 1024:
+        return f"{n // 1024 // 1024}MB"
+    return f"{n // 1024 // 1024 // 1024}GB"
 
 print("\n=== Memory Latency (pointer chase, ns/access) ===")
 print(f"{'Size':>10} {'Baseline':>12} {'TDX':>12} {'Overhead':>10}")
