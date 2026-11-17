@@ -10,6 +10,7 @@ source "$DIR/lib/common.sh"
 [[ $# -eq 1 ]] || die "usage: $0 <output_csv_path>"
 OUT="$1"
 
+ensure_dir "$DIR/bin"
 gcc -O2 -o "$DIR/bin/bandwidth_stream" "$DIR/src/bandwidth_stream.c" || die "compile failed"
 
 # 64M doubles/array = 512MB per array, comfortably past typical LLC size.

@@ -9,6 +9,7 @@ source "$DIR/lib/common.sh"
 [[ $# -eq 1 ]] || die "usage: $0 <output_csv_path>"
 OUT="$1"
 
+ensure_dir "$DIR/bin"
 gcc -O2 -o "$DIR/bin/latency_chase" "$DIR/src/latency_chase.c" || die "compile failed"
 
 echo "size_bytes,ns_per_access" > "$OUT"
